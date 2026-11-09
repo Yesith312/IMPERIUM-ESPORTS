@@ -1,0 +1,10 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Solicitudes de derechos sobre datos</h1>
+<% if (!list.length) { %><p class="empty">Sin solicitudes.</p><% } %>
+<% list.forEach(r => { %><article class="card"><span class="tag"><%= r.type %></span> <b><%= r.code %></b> · <%= r.name %> · <a href="mailto:<%= r.email %>"><%= r.email %></a> · <span class="muted small"><%= fmt(r.created_at) %></span>
+<p style="white-space:pre-line"><%= r.details %></p>
+<form method="post" class="form" action="/admin/derechos/<%= r.id %>"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Estado<select name="status"><% statuses.forEach(s => { %><option <%= r.status === s ? 'selected' : '' %>><%= s %></option><% }) %></select></label>
+<label>Respuesta al titular<textarea name="answer" rows="3"><%= r.answer || '' %></textarea></label><button class="btn ghost">Guardar</button></form></article><% }) %></div>
+<%- include('../partials/foot') %>

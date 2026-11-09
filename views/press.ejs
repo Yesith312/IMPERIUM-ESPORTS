@@ -1,0 +1,13 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><h1><%= page.title %></h1>
+<div class="prose"><%- page.body %></div>
+<h2>Logo y marca</h2>
+<div class="row"><a class="btn ghost" href="/img/logo.png" download>Logo PNG</a><a class="btn ghost" href="/img/logo.webp" download>Logo WEBP</a><a class="btn ghost" href="/img/logo-256.png" download>Logo 256 px</a><a class="btn ghost" href="/img/banner.jpg" download>Banner JPG</a></div>
+<h2>Colores corporativos</h2>
+<div class="swatches"><span style="background:#050505;color:#fff">Negro #050505</span><span style="background:#d4af37;color:#000">Dorado #D4AF37</span><span style="background:#ffffff;color:#000">Blanco #FFFFFF</span></div>
+<h2>Material autorizado</h2>
+<% if (!files.length) { %><p class="empty">Fotografías oficiales y documentos: Próximamente.</p><% } else { %>
+<div class="grid"><% files.forEach(f => { %><a class="card" href="/media/<%= f.id %>" <%= f.mime === 'application/pdf' ? 'download' : 'target=_blank rel=noopener' %>><% if (f.mime !== 'application/pdf') { %><img src="/media/<%= f.id %>" alt="<%= f.label %>" loading="lazy"><% } %><h3><%= f.label %></h3></a><% }) %></div><% } %>
+<h2>Contacto de prensa</h2><p><a href="/contacto?motivo=Prensa">Escríbenos desde el formulario de contacto</a>.</p>
+</section>
+<%- include('partials/foot') %>

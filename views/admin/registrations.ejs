@@ -1,0 +1,8 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Inscritos a tryouts</h1>
+<% if (!list.length) { %><p class="empty">Aún no hay aspirantes invitados. Invita desde el detalle de una postulación.</p><% } else { %>
+<div class="table-wrap"><table><thead><tr><th>Tryout</th><th>Aspirante</th><th>Estado</th><th>Nota promedio</th><th>Asistencia</th></tr></thead><tbody>
+<% list.forEach(r => { %><tr><td><%= r.title %><br><span class="muted small"><%= fmt(r.starts_at) %></span></td><td><a href="/admin/solicitudes/<%= r.app_id %>"><%= r.nickname %> (<%= r.code %>)</a></td><td><%= r.status %></td><td><%= r.avg_score ?? '—' %></td>
+<td><form method="post" action="/admin/inscritos/<%= r.id %>" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><select name="attendance"><% attendance.forEach(a => { %><option <%= r.attendance === a ? 'selected' : '' %>><%= a %></option><% }) %></select> <button class="link">Guardar</button></form></td></tr><% }) %></tbody></table></div><% } %></div>
+<%- include('../partials/foot') %>

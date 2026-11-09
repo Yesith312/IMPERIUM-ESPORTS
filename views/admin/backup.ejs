@@ -1,0 +1,6 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Copia de seguridad</h1>
+<p>Descarga un archivo JSON con el contenido del sitio, postulaciones y solicitudes (sin contraseñas ni archivos binarios). Guárdalo en un lugar seguro: contiene datos personales.</p>
+<form method="post" action="/admin/copia"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn">Descargar copia</button></form></div>
+<%- include('../partials/foot') %>

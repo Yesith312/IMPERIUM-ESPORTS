@@ -1,0 +1,9 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><h1>Estado de tu solicitud</h1>
+<form method="post" action="/derechos/estado" class="form"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Número de solicitud<input name="code" required placeholder="DER-XXXXXXXX"></label>
+<label>Correo<input type="email" name="email" required></label><button class="btn">CONSULTAR</button></form>
+<% if (searched && !result) { %><div class="flash error">No encontramos una solicitud con esos datos.</div><% } %>
+<% if (result) { %><div class="card"><h3><%= result.code %> · <%= result.type %></h3><span class="tag"><%= result.status %></span><% if (result.answer) { %><p style="white-space:pre-line"><%= result.answer %></p><% } %></div><% } %>
+</section>
+<%- include('partials/foot') %>

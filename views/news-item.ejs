@@ -1,0 +1,8 @@
+<%- include('partials/head') %>
+<article class="wrap narrow"><span class="tag"><%= n.category %></span><h1><%= n.title %></h1>
+<p class="muted small"><%= fmtDate(n.created_at) %><%= n.author ? ' · ' + n.author : '' %><%= n.tags ? ' · ' + n.tags : '' %></p>
+<% if (n.image) { %><img class="cover" src="<%= n.image %>" alt=""><% } %>
+<div class="prose"><%- n.body %></div>
+<p><button class="btn ghost" data-share data-title="<%= n.title %>">Compartir</button> <a class="btn ghost" href="/noticias">Volver</a></p>
+</article>
+<%- include('partials/foot') %>

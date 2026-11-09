@@ -1,0 +1,6 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><h1>Preguntas frecuentes</h1>
+<% if (!faqs.length) { %><p class="empty">Próximamente.</p><% } %>
+<% faqs.forEach(f => { %><details class="faq"><summary><%= f.question %></summary><p><%= f.answer %></p></details><% }) %>
+</section>
+<%- include('partials/foot') %>

@@ -1,0 +1,11 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Noticias y comunicados</h1>
+<form class="filters" method="get" action="/noticias">
+  <input type="search" name="q" placeholder="Buscar noticias" value="<%= q %>" aria-label="Buscar">
+  <select name="categoria" aria-label="Categoría"><option value="">Todas</option><% cats.forEach(c => { %><option <%= cat === c ? 'selected' : '' %>><%= c %></option><% }) %></select>
+  <button class="btn">Filtrar</button>
+</form>
+<% if (!news.length) { %><p class="empty">No hay noticias para mostrar. Próximamente.</p><% } else { %>
+<div class="grid"><% news.forEach(n => { %><a class="card" href="/noticias/<%= n.slug %>"><% if (n.image) { %><img src="<%= n.image %>" alt="" loading="lazy"><% } %><span class="tag"><%= n.category %></span><h3><%= n.title %></h3><p><%= n.summary %></p><span class="small muted"><%= fmtDate(n.created_at) %></span></a><% }) %></div><% } %>
+</section>
+<%- include('partials/foot') %>

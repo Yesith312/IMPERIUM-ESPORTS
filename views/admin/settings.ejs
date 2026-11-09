@@ -1,0 +1,7 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Ajustes y enlaces</h1>
+<form method="post" class="form" action="/admin/ajustes"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<% keys.forEach(k => { %><label><%= k[1] %><input name="<%= k[0] %>" value="<%= settings[k[0]] || '' %>" maxlength="300"></label><% }) %>
+<button class="btn">Guardar</button></form></div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,12 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Roster oficial</h1>
+<% if (!Object.keys(groups).length) { %><p class="empty">El roster oficial se anunciará próximamente. Mira las <a href="/reclutamiento">convocatorias</a>.</p><% } %>
+<% Object.entries(groups).forEach(([cat, list]) => { %><h2><%= cat %></h2>
+<div class="grid"><% list.forEach(p => { %><article class="card"><% if (p.photo) { %><img src="<%= p.photo %>" alt="<%= p.nick %>" loading="lazy"><% } %>
+<h3><%= p.flag %> <%= p.nick %></h3><p class="muted"><%= p.public_name || '' %> <%= p.country ? '· ' + p.country : '' %></p>
+<% if (p.role) { %><span class="tag"><%= p.role %></span><% } %><% if (p.game_id) { %><p class="small">ID: <%= p.game_id %></p><% } %>
+<p><%= p.bio %></p><% if (p.joined) { %><p class="small">Desde: <%= p.joined %></p><% } %>
+<% if (p.stats) { %><p class="small"><b>Estadísticas:</b> <%= p.stats %></p><% } %><% if (p.history) { %><p class="small"><b>Historial:</b> <%= p.history %></p><% } %>
+<% if (p.instagram) { %><a href="<%= p.instagram %>" rel="noopener" target="_blank">Instagram</a> <% } %><% if (p.tiktok) { %><a href="<%= p.tiktok %>" rel="noopener" target="_blank">TikTok</a><% } %></article><% }) %></div><% }) %>
+</section>
+<%- include('partials/foot') %>

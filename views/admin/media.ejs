@@ -1,0 +1,13 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Biblioteca de archivos</h1>
+<p class="muted">PNG, JPG, WEBP o PDF, máximo 4 MB. Copia la dirección <code>/media/ID</code> y pégala en los campos de foto, logo o imagen.</p>
+<form method="post" enctype="multipart/form-data" class="form" action="/admin/medios?_csrf=<%= csrf %>">
+<label>Archivo<input type="file" name="file" accept="image/png,image/jpeg,image/webp,application/pdf" required></label>
+<label>Nombre descriptivo<input name="label" maxlength="120"></label>
+<label class="check"><input type="checkbox" name="press"> Mostrar en el kit de prensa</label>
+<button class="btn">Subir</button></form>
+<% if (!list.length) { %><p class="empty">Sin archivos.</p><% } else { %>
+<div class="grid"><% list.forEach(m => { %><div class="card"><% if (m.mime !== 'application/pdf') { %><img src="/media/<%= m.id %>" alt="<%= m.label %>" loading="lazy"><% } %><b><%= m.label %></b><p class="small"><code>/media/<%= m.id %></code> · <%= Math.round(m.size / 1024) %> KB<%= m.press ? ' · prensa' : '' %></p>
+<form method="post" action="/admin/medios/<%= m.id %>/eliminar" data-confirm="¿Eliminar este archivo?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="link">Eliminar</button></form></div><% }) %></div><% } %></div>
+<%- include('../partials/foot') %>

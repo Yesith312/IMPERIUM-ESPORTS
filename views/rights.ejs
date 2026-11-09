@@ -1,0 +1,12 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><h1>Derechos sobre tus datos personales</h1>
+<p>Conforme a la Ley 1581 de 2012 puedes consultar, actualizar, corregir, solicitar la supresión (cuando proceda) o revocar la autorización sobre tus datos. <a href="/derechos/estado">Consultar una solicitud</a> · <a href="/privacidad">Política de privacidad</a></p>
+<% errors.forEach(e => { %><div class="flash error"><%= e %></div><% }) %>
+<form method="post" action="/derechos" class="form"><input type="hidden" name="_csrf" value="<%= csrf %>"><%- include('partials/guard') %>
+<label>Tipo de solicitud<select name="type" required><option value="">Selecciona</option><% types.forEach(t => { %><option <%= form.type === t ? 'selected' : '' %>><%= t %></option><% }) %></select></label>
+<label>Nombre completo<input name="name" required maxlength="100" value="<%= form.name || '' %>"></label>
+<label>Correo con el que te postulaste o escribiste<input type="email" name="email" required maxlength="150" value="<%= form.email || '' %>"></label>
+<label>Detalle de tu solicitud<textarea name="details" rows="6" required minlength="15" maxlength="3000"><%= form.details || '' %></textarea></label>
+<label class="check"><input type="checkbox" name="identity" required> Declaro que soy el titular de los datos o su representante legal.</label>
+<button class="btn">ENVIAR SOLICITUD</button></form></section>
+<%- include('partials/foot') %>

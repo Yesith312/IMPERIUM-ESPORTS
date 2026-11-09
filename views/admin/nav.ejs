@@ -1,0 +1,15 @@
+<div class="wrap admin">
+<nav class="subnav">
+  <a href="/admin">Panel</a>
+  <% Object.entries(resources).forEach(([k, c]) => { if (can(user.role, k)) { %><a href="/admin/r/<%= k %>"><%= c.label %></a><% } }) %>
+  <% if (can(user.role, 'solicitudes')) { %><a href="/admin/solicitudes">Postulaciones</a><% } %>
+  <% if (can(user.role, 'tryouts')) { %><a href="/admin/inscritos">Inscritos tryouts</a><% } %>
+  <% if (can(user.role, 'medios')) { %><a href="/admin/medios">Archivos</a><% } %>
+  <% if (can(user.role, 'derechos')) { %><a href="/admin/derechos">Derechos de datos</a><% } %>
+  <% if (user.role === 'superadmin') { %><a href="/admin/copia">Copia</a><% } %>
+  <% if (can(user.role, 'mensajes')) { %><a href="/admin/mensajes">Mensajes</a><% } %>
+  <% if (can(user.role, 'ajustes')) { %><a href="/admin/ajustes">Ajustes</a><% } %>
+  <% if (can(user.role, 'usuarios')) { %><a href="/admin/usuarios">Usuarios</a><% } %>
+  <% if (can(user.role, 'registro')) { %><a href="/admin/registro">Registro</a><% } %>
+  <form method="post" action="/salir"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn ghost">Salir (<%= user.email %>)</button></form>
+</nav>

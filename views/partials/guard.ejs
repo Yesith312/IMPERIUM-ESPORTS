@@ -1,0 +1,3 @@
+<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="hidden" name="_t" value="<%= Date.now() %>">
+<% if (turnstileKey) { %><div class="cf-turnstile" data-sitekey="<%= turnstileKey %>"></div><script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script><% } %>

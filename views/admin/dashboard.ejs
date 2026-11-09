@@ -1,0 +1,10 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Panel administrativo</h1>
+<div class="grid small">
+<% if (can(user.role, 'solicitudes')) { %><a class="card center-text" href="/admin/solicitudes"><h3><%= counts.apps %></h3><p>Postulaciones nuevas</p></a><% } %>
+<% if (can(user.role, 'mensajes')) { %><a class="card center-text" href="/admin/mensajes"><h3><%= counts.msgs %></h3><p>Mensajes sin leer</p></a><% } %>
+<% if (can(user.role, 'derechos')) { %><a class="card center-text" href="/admin/derechos"><h3><%= counts.rights %></h3><p>Solicitudes de datos</p></a><% } %>
+<% if (can(user.role, 'noticias')) { %><a class="card center-text" href="/admin/r/noticias"><h3><%= counts.news %></h3><p>Noticias</p></a><% } %>
+</div></div>
+<%- include('../partials/foot') %>

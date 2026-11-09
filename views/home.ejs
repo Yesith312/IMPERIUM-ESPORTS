@@ -1,0 +1,54 @@
+<%- include('partials/head') %>
+<div class="splash" data-splash hidden><img src="/img/logo.png" alt="IMPERIUM ESPORTS" width="260" height="260"><button class="btn ghost" data-skip>Saltar</button></div>
+<section class="hero" style="background-image:linear-gradient(rgba(0,0,0,.55),#050505),url('/img/banner.jpg')">
+  <img src="/img/logo.png" alt="IMPERIUM ESPORTS Free Fire" width="220" height="220" class="hero-logo">
+  <p class="eyebrow">IMPERIUM ESPORTS · IMPX</p>
+  <h1>NACIDOS PARA DOMINAR.<br><span class="gold">DESTINADOS A LA GLORIA</span></h1>
+  <p class="lead">Una nueva generación competitiva. Una sola identidad. Un mismo objetivo.</p>
+  <p class="slogan">«Juntos hacia la gloria»</p>
+  <div class="row center"><a class="btn" href="/nosotros">DESCUBRIR LA ORGANIZACIÓN</a><a class="btn ghost" href="/reclutamiento">ÚNETE A IMPERIUM</a></div>
+</section>
+
+<section class="wrap">
+  <h2>Últimas noticias</h2>
+  <% if (!news.length) { %><p class="empty">Próximamente.</p><% } else { %>
+  <div class="grid"><% news.forEach(n => { %><a class="card" href="/noticias/<%= n.slug %>"><% if (n.image) { %><img src="<%= n.image %>" alt="" loading="lazy"><% } %><span class="tag"><%= n.category %></span><h3><%= n.title %></h3><p><%= n.summary %></p></a><% }) %></div><% } %>
+</section>
+
+<section class="wrap">
+  <h2>Próximos torneos</h2>
+  <% if (!tournaments.length) { %><p class="empty">Próximamente.</p><% } else { %>
+  <div class="grid"><% tournaments.forEach(t => { %><a class="card" href="/torneos/<%= t.slug %>"><span class="tag"><%= t.status %></span><h3><%= t.name %></h3><p><%= fmt(t.starts_at) %></p></a><% }) %></div><% } %>
+</section>
+
+<section class="wrap">
+  <h2>Resultados recientes</h2>
+  <% if (!results.length) { %><p class="empty">Próximamente.</p><% } else { %>
+  <div class="grid"><% results.forEach(r => { %><div class="card"><h3><%= r.tournament %></h3><p>Posición <%= r.position ?? '—' %> · <%= r.points ?? 0 %> pts · <%= r.booyahs ?? 0 %> Booyahs</p></div><% }) %></div><% } %>
+</section>
+
+<section class="wrap">
+  <h2>Roster</h2>
+  <% if (!players.length) { %><p class="empty">Roster oficial: Próximamente.</p><% } else { %>
+  <div class="grid small"><% players.forEach(p => { %><div class="card center-text"><% if (p.photo) { %><img src="<%= p.photo %>" alt="<%= p.nick %>" loading="lazy"><% } %><h3><%= p.flag %> <%= p.nick %></h3><p><%= p.role %></p></div><% }) %></div><% } %>
+</section>
+
+<section class="wrap">
+  <h2>Convocatorias abiertas</h2>
+  <% if (!tryouts.length) { %><p class="empty">No hay convocatorias abiertas por ahora. Puedes <a href="/reclutamiento">postularte</a> y te avisaremos.</p><% } else { %>
+  <div class="grid"><% tryouts.forEach(t => { %><a class="card" href="/tryouts"><span class="tag">Abierta</span><h3><%= t.title %></h3><p><%= fmt(t.starts_at) %></p></a><% }) %></div><% } %>
+  <p><a class="btn" href="/reclutamiento">TU TALENTO PUEDE FORMAR PARTE DEL IMPERIO</a></p>
+</section>
+
+<section class="wrap">
+  <h2>Patrocinadores</h2>
+  <% if (!sponsors.length) { %><p class="empty">Próximamente. ¿Quieres aliarte con nosotros? <a href="/contacto?motivo=Patrocinios">Escríbenos</a>.</p><% } else { %>
+  <div class="logos"><% sponsors.forEach(s => { %><a href="<%= s.website || '/patrocinadores' %>" rel="noopener"><% if (s.logo) { %><img src="<%= s.logo %>" alt="<%= s.name %>" loading="lazy"><% } else { %><%= s.name %><% } %></a><% }) %></div><% } %>
+</section>
+
+<section class="wrap">
+  <h2>Anuncios y comunidad</h2>
+  <p>Síguenos en nuestras redes oficiales y únete a la <a href="/comunidad">comunidad IMPERIUM</a>.</p>
+  <div class="row"><% let any = false; [['instagram','Instagram'],['tiktok','TikTok'],['youtube','YouTube'],['discord','Discord']].forEach(s => { if (settings[s[0]]) { any = true; %><a class="btn ghost" href="<%= settings[s[0]] %>" rel="noopener" target="_blank"><%= s[1] %></a><% } }) %><% if (!any) { %><span class="muted">Redes oficiales: Próximamente.</span><% } %></div>
+</section>
+<%- include('partials/foot') %>

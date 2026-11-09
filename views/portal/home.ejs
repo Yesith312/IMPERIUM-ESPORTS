@@ -1,0 +1,16 @@
+<%- include('../partials/head', { desc: 'Portal privado' }) %>
+<section class="wrap"><h1>Portal privado</h1>
+<p>Hola, <b><%= me.full_name || me.email %></b> · <span class="tag"><%= me.role %></span> · <a href="/portal/perfil">Mi perfil</a><% if (isAdmin) { %> · <a href="/admin">Panel administrativo</a><% } %></p>
+<form method="post" action="/salir"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn ghost">Cerrar sesión</button></form>
+<h2>Anuncios del manager</h2>
+<% if (!posts.length) { %><p class="empty">Sin comunicados por ahora.</p><% } %>
+<% posts.forEach(p => { %><article class="card"><h3><%= p.title %></h3><span class="muted small"><%= fmtDate(p.created_at) %></span><div class="prose"><%- p.body %></div></article><% }) %>
+<h2>Calendario de entrenamientos</h2>
+<% if (!trainings.length) { %><p class="empty">Sin entrenamientos programados.</p><% } else { %>
+<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Actividad</th><th>Detalles</th></tr></thead><tbody><% trainings.forEach(t => { %><tr><td><%= fmt(t.starts_at) || 'Por definir' %></td><td><%= t.title %></td><td style="white-space:pre-line"><%= t.details %></td></tr><% }) %></tbody></table></div><% } %>
+<h2>Torneos próximos</h2>
+<% if (!tournaments.length) { %><p class="empty">Sin torneos próximos.</p><% } else { %><ul><% tournaments.forEach(t => { %><li><a href="/torneos/<%= t.slug %>"><%= t.name %></a> · <%= t.status %> · <%= fmt(t.starts_at) %></li><% }) %></ul><% } %>
+<h2>Documentos y normas</h2>
+<ul><li><a href="/conducta">Código de conducta</a></li><% docs.forEach(d => { %><li><a href="<%= d.url %>" rel="noopener" target="_blank"><%= d.title %></a></li><% }) %></ul>
+</section>
+<%- include('../partials/foot') %>

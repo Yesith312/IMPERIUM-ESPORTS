@@ -1,0 +1,37 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><h1>TU TALENTO PUEDE FORMAR PARTE DEL IMPERIO</h1>
+<ul class="prose"><li>Reclutamiento para Free Fire Battle Royale · Región LATAM Norte.</li><li>Convocatorias para jugadores de toda Latinoamérica, sujetas a las reglas de elegibilidad de cada competición.</li><li>Edad mínima: 16 años.</li><li>Valoramos nivel competitivo y potencial de crecimiento.</li></ul>
+<p><a href="/reclutamiento/estado">Consultar el estado de mi postulación</a> · <a href="/politica-reclutamiento">Política de reclutamiento</a></p>
+<% errors.forEach(e => { %><div class="flash error"><%= e %></div><% }) %>
+<form method="post" action="/reclutamiento" class="form">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <%- include('partials/guard') %>
+  <% const v = k => form[k] || ''; %>
+  <label>Nombre<input name="name" required maxlength="100" value="<%= v('name') %>"></label>
+  <label>Edad<input type="number" name="age" min="16" max="80" required value="<%= v('age') %>"></label>
+  <label>País<input name="country" required maxlength="60" value="<%= v('country') %>"></label>
+  <label>Ciudad (opcional)<input name="city" maxlength="60" value="<%= v('city') %>"></label>
+  <label>Nickname de Free Fire<input name="nickname" required maxlength="60" value="<%= v('nickname') %>"></label>
+  <label>ID de jugador<input name="player_id" required inputmode="numeric" pattern="\d{5,15}" value="<%= v('player_id') %>"></label>
+  <label>Nivel y rango<input name="rank" required maxlength="60" value="<%= v('rank') %>"></label>
+  <label>Rol principal<select name="main_role" required><option value="">Selecciona</option><% roles.forEach(r => { %><option <%= v('main_role') === r ? 'selected' : '' %>><%= r %></option><% }) %></select></label>
+  <label>Rol secundario<select name="second_role"><option value="">Ninguno</option><% roles.forEach(r => { %><option <%= v('second_role') === r ? 'selected' : '' %>><%= r %></option><% }) %></select></label>
+  <label>Experiencia competitiva<textarea name="experience" rows="3" maxlength="1000"><%= v('experience') %></textarea></label>
+  <label>Equipos anteriores (opcional)<input name="previous_teams" maxlength="300" value="<%= v('previous_teams') %>"></label>
+  <label>Disponibilidad de entrenamiento<input name="availability" required maxlength="300" value="<%= v('availability') %>"></label>
+  <label>Horario habitual<input name="schedule" maxlength="200" value="<%= v('schedule') %>"></label>
+  <label>Dispositivo<select name="device" required><option value="">Selecciona</option><% devices.forEach(d => { %><option <%= v('device') === d ? 'selected' : '' %>><%= d %></option><% }) %></select></label>
+  <label>Conexión a internet<input name="connection" maxlength="200" value="<%= v('connection') %>"></label>
+  <label>Discord<input name="discord" required maxlength="80" value="<%= v('discord') %>"></label>
+  <label>TikTok<input name="tiktok" maxlength="120" value="<%= v('tiktok') %>"></label>
+  <label>Instagram<input name="instagram" maxlength="120" value="<%= v('instagram') %>"></label>
+  <label>Enlace a clips o gameplay<input name="clips" maxlength="300" value="<%= v('clips') %>"></label>
+  <label>Descripción personal<textarea name="about" rows="4" required minlength="20" maxlength="1500"><%= v('about') %></textarea></label>
+  <label>Motivación para ingresar a IMPERIUM<textarea name="motivation" rows="4" required minlength="20" maxlength="1500"><%= v('motivation') %></textarea></label>
+  <label class="check"><input type="checkbox" name="terms" required> Acepto los <a href="/politica-reclutamiento" target="_blank">términos de postulación</a>.</label>
+  <label class="check"><input type="checkbox" name="privacy" required> Acepto el <a href="/privacidad" target="_blank">aviso de privacidad</a>.</label>
+  <label class="check"><input type="checkbox" name="data_consent" required> Autorizo el tratamiento de mis datos personales para este proceso.</label>
+  <label class="check"><input type="checkbox" name="guardian"> Soy menor de 18 años y cuento con la autorización de mi representante legal.</label>
+  <button class="btn">ENVIAR POSTULACIÓN</button>
+</form></section>
+<%- include('partials/foot') %>

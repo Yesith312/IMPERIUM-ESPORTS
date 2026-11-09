@@ -1,0 +1,11 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1><%= page.title %></h1>
+<div class="prose"><%- page.body %></div>
+<% if (!teams.length) { %><p class="empty">Próximamente.</p><% } else { %>
+<div class="grid"><% teams.forEach(t => { %><article class="card"><% if (t.logo) { %><img src="<%= t.logo %>" alt="<%= t.name %>" loading="lazy"><% } %>
+<span class="tag"><%= t.status %></span><h3><%= t.name %></h3>
+<p><b>Juego:</b> <%= t.game || '—' %><br><b>Región:</b> <%= t.region || '—' %><br><b>Manager:</b> <%= t.manager || 'Por anunciar' %><br><b>Coach:</b> <%= t.coach || 'Por anunciar' %></p>
+<% if (t.history) { %><p class="small" style="white-space:pre-line"><b>Historial:</b> <%= t.history %></p><% } else { %><p class="small muted">Historial de resultados: Próximamente.</p><% } %>
+<a href="/roster">Ver roster</a></article><% }) %></div><% } %>
+</section>
+<%- include('partials/foot') %>

@@ -1,0 +1,17 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav') %>
+<h1>Postulación <%= a.code %></h1>
+<div class="table-wrap"><table><tbody>
+<% Object.entries(a.data).forEach(([k, v]) => { %><tr><th><%= k %></th><td style="white-space:pre-line"><%= v %></td></tr><% }) %>
+<tr><th>Autorización representante</th><td><%= a.guardian_consent ? 'Sí' : 'No aplica' %></td></tr></tbody></table></div>
+<h2>Gestión y evaluación privada</h2>
+<form method="post" class="form" action="/admin/solicitudes/<%= a.id %>"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Estado<select name="status"><% statuses.forEach(s => { %><option <%= a.status === s ? 'selected' : '' %>><%= s %></option><% }) %></select></label>
+<% evalKeys.forEach(k => { %><label><%= k.replace('_', ' ') %> (1-10)<input type="number" name="ev_<%= k %>" min="1" max="10" value="<%= a.evaluation && a.evaluation[k] ? a.evaluation[k] : '' %>"></label><% }) %>
+<label>Observaciones privadas<textarea name="notes" rows="5"><%= a.notes || '' %></textarea></label>
+<button class="btn">Guardar</button></form>
+<h2>Tryouts</h2>
+<% regs.forEach(g => { %><p><span class="tag"><%= g.attendance %></span> <%= g.title %></p><% }) %>
+<% if (tryouts.length) { %><form method="post" class="form" action="/admin/solicitudes/<%= a.id %>/invitar"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Invitar a un tryout<select name="tryout_id"><% tryouts.forEach(t => { %><option value="<%= t.id %>"><%= t.title %> · <%= fmt(t.starts_at) %></option><% }) %></select></label><button class="btn ghost">Invitar</button></form><% } else { %><p class="muted">No hay tryouts abiertos. Crea uno en la sección Tryouts.</p><% } %></div>
+<%- include('../partials/foot') %>
