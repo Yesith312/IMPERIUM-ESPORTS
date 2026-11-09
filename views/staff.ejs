@@ -1,0 +1,7 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Staff y dirección</h1>
+<div class="grid"><% staff.forEach(s => { %><article class="card"><% if (s.photo && !s.vacant) { %><img src="<%= s.photo %>" alt="<%= s.name %>" loading="lazy"><% } %>
+<span class="tag"><%= s.position %></span>
+<% if (s.vacant || !s.name) { %><h3>Vacante</h3><p class="muted">Cargo por asignar.</p><% } else { %><h3><%= s.name %></h3><p><%= s.bio %></p><% if (s.social) { %><a href="<%= s.social %>" rel="noopener" target="_blank">Red social</a><% } %><% } %></article><% }) %></div>
+</section>
+<%- include('partials/foot') %>

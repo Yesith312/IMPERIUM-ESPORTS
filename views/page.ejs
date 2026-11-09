@@ -1,0 +1,10 @@
+<%- include('partials/head') %>
+<section class="wrap narrow">
+  <h1><%= page.title %></h1>
+  <div class="prose"><%- page.body %></div>
+  <% if (['terminos','privacidad','cookies','conducta','politica-reclutamiento'].includes(page.slug)) { %>
+  <p class="muted small">Última actualización: <%= settings.updated %></p>
+  <% if (page.slug === 'privacidad' && (settings.legal_name || settings.legal_id)) { %><p class="small">Responsable: <%= settings.legal_name %> · NIT <%= settings.legal_id %> · <%= settings.legal_address %> · <%= settings.privacy_email %></p><% } %>
+  <% } %>
+</section>
+<%- include('partials/foot') %>

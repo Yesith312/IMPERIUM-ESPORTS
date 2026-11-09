@@ -1,0 +1,14 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1><%= title %></h1>
+<form method="post" class="form" action="/admin/r/<%= resKey %>/<%= isNew ? 'nuevo' : item[cfg.key || 'id'] %>">
+<input type="hidden" name="_csrf" value="<%= csrf %>">
+<% cfg.fields.forEach(f => { const val = item[f.n]; const shown = val instanceof Date ? new Date(val.getTime() - 5 * 3600000).toISOString().slice(0, 16).replace('T', ' ') : (val ?? ''); %>
+<% if (f.t === 'checkbox') { %><label class="check"><input type="checkbox" name="<%= f.n %>" <%= (isNew ? ['published','active'].includes(f.n) : val) ? 'checked' : '' %>> <%= f.l %></label>
+<% } else if (f.t === 'textarea') { %><label><%= f.l %><textarea name="<%= f.n %>" rows="<%= f.big ? 16 : 4 %>" <%= f.req ? 'required' : '' %>><%= shown %></textarea></label>
+<% } else if (f.t === 'select') { %><label><%= f.l %><select name="<%= f.n %>"><% f.o.forEach(o => { %><option <%= shown === o ? 'selected' : '' %>><%= o %></option><% }) %></select></label>
+<% } else { %><label><%= f.l %><input type="<%= f.t === 'number' ? 'number' : 'text' %>" name="<%= f.n %>" value="<%= shown %>" <%= f.req ? 'required' : '' %>></label><% } %>
+<% }) %>
+<button class="btn">Guardar</button> <a class="btn ghost" href="/admin/r/<%= resKey %>">Cancelar</a>
+</form></div>
+<%- include('../partials/foot') %>

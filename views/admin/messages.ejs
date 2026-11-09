@@ -1,0 +1,8 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1>Mensajes</h1>
+<% if (!list.length) { %><p class="empty">Sin mensajes.</p><% } %>
+<% list.forEach(m => { %><article class="card"><span class="tag"><%= m.reason %></span> <b><%= m.name %></b> · <a href="mailto:<%= m.email %>"><%= m.email %></a> · <span class="muted small"><%= fmt(m.created_at) %></span>
+<p style="white-space:pre-line"><%= m.message %></p>
+<% if (!m.read) { %><form method="post" action="/admin/mensajes/<%= m.id %>/leido"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn ghost">Marcar como leído</button></form><% } %></article><% }) %></div>
+<%- include('../partials/foot') %>

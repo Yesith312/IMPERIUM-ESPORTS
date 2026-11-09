@@ -1,0 +1,23 @@
+</main>
+<footer class="foot">
+  <div class="foot-grid">
+    <div><img src="/img/logo.png" alt="" width="72" height="72"><p><b>IMPERIUM ESPORTS · IMPX</b><br>Juntos hacia la gloria.<br>Sede administrativa: Colombia · LATAM Norte</p></div>
+    <div><h4>Redes</h4>
+      <% [['instagram','Instagram'],['tiktok','TikTok'],['youtube','YouTube'],['discord','Discord']].forEach(s => { if (settings[s[0]]) { %><a href="<%= settings[s[0]] %>" rel="noopener" target="_blank"><%= s[1] %></a><% } }) %>
+      <% if (settings.email) { %><a href="mailto:<%= settings.email %>"><%= settings.email %></a><% } %>
+      <% if (!settings.instagram && !settings.tiktok && !settings.youtube && !settings.discord && !settings.email) { %><span class="muted">Próximamente</span><% } %>
+    </div>
+    <div><h4>Legal</h4><a href="/terminos">Términos y condiciones</a><a href="/privacidad">Política de privacidad</a><a href="/cookies">Política de cookies</a><a href="/conducta">Código de conducta</a><a href="/politica-reclutamiento">Política de reclutamiento</a><a href="/acceso">Acceso privado</a></div>
+  </div>
+  <p class="muted small">IMPERIUM ESPORTS es una organización independiente. No es una entidad oficial de Garena. © <%= new Date().getFullYear() %> IMPERIUM ESPORTS.</p>
+</footer>
+<div class="cookie" data-cookie hidden role="dialog" aria-label="Preferencias de cookies">
+  <p>Usamos cookies necesarias para que el sitio funcione. Puedes aceptar o rechazar las no necesarias. <a href="/cookies">Más información</a></p>
+  <label class="check"><input type="checkbox" checked disabled> Necesarias</label>
+  <label class="check"><input type="checkbox" data-pref="preferences"> Preferencias</label>
+  <label class="check"><input type="checkbox" data-pref="analytics"> Analíticas</label>
+  <div class="row"><button class="btn" data-accept>Aceptar todas</button><button class="btn ghost" data-reject>Rechazar no necesarias</button><button class="btn ghost" data-save>Guardar preferencias</button></div>
+</div>
+<script src="/js/main.js" defer></script>
+</body>
+</html>

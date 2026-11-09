@@ -1,0 +1,13 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1>Postulación <%= a.code %></h1>
+<div class="table-wrap"><table><tbody>
+<% Object.entries(a.data).forEach(([k, v]) => { %><tr><th><%= k %></th><td style="white-space:pre-line"><%= v %></td></tr><% }) %>
+<tr><th>Autorización representante</th><td><%= a.guardian_consent ? 'Sí' : 'No aplica' %></td></tr></tbody></table></div>
+<h2>Gestión y evaluación privada</h2>
+<form method="post" class="form" action="/admin/solicitudes/<%= a.id %>"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Estado<select name="status"><% statuses.forEach(s => { %><option <%= a.status === s ? 'selected' : '' %>><%= s %></option><% }) %></select></label>
+<% evalKeys.forEach(k => { %><label><%= k.replace('_', ' ') %> (1-10)<input type="number" name="ev_<%= k %>" min="1" max="10" value="<%= a.evaluation && a.evaluation[k] ? a.evaluation[k] : '' %>"></label><% }) %>
+<label>Observaciones privadas<textarea name="notes" rows="5"><%= a.notes || '' %></textarea></label>
+<button class="btn">Guardar</button></form></div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,6 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Tryouts</h1>
+<% if (!list.length) { %><p class="empty">No hay tryouts publicados. Próximamente. Mientras tanto, <a href="/reclutamiento">envía tu postulación</a>.</p><% } else { %>
+<div class="grid"><% list.forEach(t => { %><article class="card"><span class="tag"><%= t.open ? 'Convocatoria abierta' : 'Cerrada' %></span><h3><%= t.title %></h3><p><b>Fecha:</b> <%= fmt(t.starts_at) || 'Por definir' %></p><p><b>Roles:</b> <%= t.roles || '—' %></p><p style="white-space:pre-line"><%= t.requirements %></p><% if (t.open) { %><a class="btn" href="/reclutamiento">POSTULARME</a><% } %></article><% }) %></div><% } %>
+</section>
+<%- include('partials/foot') %>

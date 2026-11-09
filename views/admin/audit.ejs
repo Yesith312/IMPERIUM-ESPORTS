@@ -1,0 +1,6 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1>Registro de actividad</h1>
+<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Usuario</th><th>Acción</th></tr></thead><tbody>
+<% list.forEach(l => { %><tr><td><%= fmt(l.created_at) %></td><td><%= l.user_email %></td><td><%= l.action %></td></tr><% }) %></tbody></table></div></div>
+<%- include('../partials/foot') %>

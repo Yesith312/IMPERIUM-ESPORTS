@@ -1,0 +1,11 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1>Usuarios y permisos</h1>
+<div class="table-wrap"><table><thead><tr><th>Correo</th><th>Rol</th></tr></thead><tbody><% list.forEach(u => { %><tr><td><%= u.email %></td><td><%= u.role %></td></tr><% }) %></tbody></table></div>
+<h2>Crear o actualizar usuario</h2>
+<form method="post" class="form" action="/admin/usuarios"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Correo<input type="email" name="email" required></label>
+<label>Contraseña (mínimo 12 caracteres)<input type="password" name="password" minlength="12" required autocomplete="new-password"></label>
+<label>Rol<select name="role"><% roles.forEach(r => { %><option><%= r %></option><% }) %></select></label>
+<button class="btn">Guardar</button></form></div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %></title>
+<meta name="description" content="<%= desc %>">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= desc %>">
+<meta property="og:type" content="website">
+<meta property="og:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : siteUrl + '/img/logo.png' %>">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href="/img/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="top">
+  <a class="brand" href="/"><img src="/img/logo.png" alt="IMPERIUM ESPORTS" width="44" height="44"><span>IMPERIUM <b>IMPX</b></span></a>
+  <button class="burger" aria-label="Menú" aria-expanded="false" data-burger>☰</button>
+  <nav class="nav" data-nav>
+    <a href="/">Inicio</a><a href="/nosotros">Nosotros</a><a href="/equipos">Equipos</a><a href="/roster">Roster</a><a href="/staff">Staff</a>
+    <a href="/noticias">Noticias</a><a href="/torneos">Torneos</a><a href="/resultados">Resultados</a>
+    <a href="/reclutamiento" class="hl">Reclutamiento</a><a href="/tryouts">Tryouts</a><a href="/patrocinadores">Patrocinadores</a>
+    <a href="/comunidad">Comunidad</a><a href="/prensa">Prensa</a><a href="/contacto">Contacto</a><a href="/preguntas-frecuentes">FAQ</a>
+  </nav>
+</header>
+<main id="main">
+<% if (flash) { %><div class="flash <%= flash.type %>" role="status"><%= flash.text %></div><% } %>

@@ -1,0 +1,11 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1><%= cfg.label %></h1>
+<% if (!cfg.noCreate) { %><p><a class="btn" href="/admin/r/<%= resKey %>/nuevo">Nuevo</a></p><% } %>
+<% if (!list.length) { %><p class="empty">Sin registros.</p><% } else { %>
+<div class="table-wrap"><table><thead><tr><% cfg.cols.forEach(c => { %><th><%= c %></th><% }) %><th></th></tr></thead><tbody>
+<% list.forEach(r => { %><tr><% cfg.cols.forEach(c => { %><td><%= typeof r[c] === 'boolean' ? (r[c] ? 'Sí' : 'No') : (r[c] instanceof Date ? fmt(r[c]) : r[c]) %></td><% }) %>
+<td><a href="/admin/r/<%= resKey %>/<%= r[pk] %>">Editar</a>
+<% if (!cfg.noCreate) { %><form class="inline" method="post" action="/admin/r/<%= resKey %>/<%= r[pk] %>/eliminar" data-confirm="¿Eliminar este registro?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="link">Eliminar</button></form><% } %></td></tr><% }) %>
+</tbody></table></div><% } %></div>
+<%- include('../partials/foot') %>

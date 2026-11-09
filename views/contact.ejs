@@ -1,0 +1,15 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><h1>Contacto</h1>
+<% errors.forEach(e => { %><div class="flash error"><%= e %></div><% }) %>
+<form method="post" action="/contacto" class="form">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <label>Nombre<input name="name" required maxlength="100" value="<%= form.name || '' %>"></label>
+  <label>Correo<input type="email" name="email" required maxlength="150" value="<%= form.email || '' %>"></label>
+  <label>Motivo<select name="reason" required><option value="">Selecciona</option><% reasons.forEach(r => { %><option <%= form.reason === r ? 'selected' : '' %>><%= r %></option><% }) %></select></label>
+  <label>Mensaje<textarea name="message" rows="6" required minlength="10" maxlength="3000"><%= form.message || '' %></textarea></label>
+  <button class="btn">ENVIAR MENSAJE</button>
+</form>
+<p class="muted">Al enviar aceptas la <a href="/privacidad">Política de privacidad</a>.</p>
+</section>
+<%- include('partials/foot') %>

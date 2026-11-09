@@ -1,0 +1,7 @@
+<%- include('../partials/head', { desc: 'Acceso privado' }) %>
+<section class="wrap narrow"><h1>Acceso privado</h1>
+<form method="post" action="/acceso" class="form"><input type="hidden" name="_csrf" value="<%= csrf %>">
+<label>Correo<input type="email" name="email" required autocomplete="username"></label>
+<label>Contraseña<input type="password" name="password" required autocomplete="current-password"></label>
+<button class="btn">ENTRAR</button></form></section>
+<%- include('../partials/foot') %>

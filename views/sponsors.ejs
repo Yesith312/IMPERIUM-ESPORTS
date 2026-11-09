@@ -1,0 +1,7 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Patrocinadores y alianzas</h1>
+<% if (!sponsors.length) { %><p class="empty">Aún no hay patrocinadores oficiales. Próximamente.</p><% } else { %>
+<div class="grid"><% sponsors.forEach(s => { %><div class="card"><% if (s.logo) { %><img src="<%= s.logo %>" alt="<%= s.name %>" loading="lazy"><% } %><span class="tag"><%= s.tier %></span><h3><%= s.name %></h3><p><%= s.description %></p><% if (s.website) { %><a href="<%= s.website %>" rel="noopener" target="_blank">Sitio web</a><% } %><% if (s.social) { %> · <a href="<%= s.social %>" rel="noopener" target="_blank">Redes</a><% } %></div><% }) %></div><% } %>
+<h2>Propuestas comerciales</h2><p>¿Quieres patrocinar o aliarte con IMPERIUM ESPORTS?</p><a class="btn" href="/contacto?motivo=Patrocinios">ENVIAR PROPUESTA</a>
+</section>
+<%- include('partials/foot') %>

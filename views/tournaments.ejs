@@ -1,0 +1,8 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Torneos y competiciones</h1>
+<p class="muted">IMPERIUM solo figura como participante cuando la organización lo confirma.</p>
+<% if (!list.length) { %><p class="empty">Calendario competitivo: Próximamente.</p><% } else { %>
+<div class="table-wrap"><table><thead><tr><th>Torneo</th><th>Fecha</th><th>Región</th><th>Formato</th><th>Estado</th></tr></thead><tbody>
+<% list.forEach(t => { %><tr><td><a href="/torneos/<%= t.slug %>"><%= t.name %></a></td><td><%= fmt(t.starts_at) || 'Por definir' %></td><td><%= t.region %></td><td><%= t.format %></td><td><span class="tag"><%= t.status %></span></td></tr><% }) %></tbody></table></div><% } %>
+</section>
+<%- include('partials/foot') %>

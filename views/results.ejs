@@ -1,0 +1,9 @@
+<%- include('partials/head') %>
+<section class="wrap"><h1>Resultados y estadísticas</h1>
+<% if (!rows.length) { %><p class="empty">Aún no hay resultados publicados. Próximamente.</p><% } else { %>
+<div class="grid small"><div class="card center-text"><h3><%= totals.points %></h3><p>Puntos</p></div><div class="card center-text"><h3><%= totals.booyahs %></h3><p>Booyahs</p></div><div class="card center-text"><h3><%= totals.kills %></h3><p>Eliminaciones</p></div><div class="card center-text"><h3><%= totals.matches %></h3><p>Partidas</p></div></div>
+<div class="table-wrap"><table><thead><tr><th>Torneo</th><th>Temporada</th><th>Pos.</th><th>Puntos</th><th>Booyahs</th><th>Elim.</th><th>Partidas</th></tr></thead><tbody>
+<% rows.forEach(r => { const max = Math.max(...rows.map(x => x.points || 0), 1); %><tr><td><%= r.tournament %></td><td><%= r.season %></td><td><%= r.position ?? '—' %></td><td><div class="bar"><i style="width:<%= Math.round(((r.points || 0) / max) * 100) %>%"></i></div><%= r.points ?? 0 %></td><td><%= r.booyahs ?? 0 %></td><td><%= r.kills ?? 0 %></td><td><%= r.matches ?? 0 %></td></tr><% }) %></tbody></table></div><% } %>
+<% if (players.length) { %><h2>Rendimiento por jugador</h2><div class="table-wrap"><table><tbody><% players.forEach(p => { %><tr><td><b><%= p.nick %></b></td><td><%= p.stats %></td></tr><% }) %></tbody></table></div><% } %>
+</section>
+<%- include('partials/foot') %>

@@ -1,0 +1,8 @@
+<%- include('partials/head') %>
+<section class="wrap narrow"><span class="tag"><%= t.status %></span><h1><%= t.name %></h1>
+<p><b>Fecha:</b> <%= fmt(t.starts_at) || 'Por definir' %> · <b>Región:</b> <%= t.region || '—' %> · <b>Formato:</b> <%= t.format || '—' %></p>
+<p class="muted"><%= t.confirmed ? 'Participación de IMPERIUM confirmada.' : 'Participación de IMPERIUM pendiente de confirmación oficial.' %></p>
+<p><%= t.description %></p>
+<% if (t.result) { %><h2>Resultados y clasificación</h2><p style="white-space:pre-line"><%= t.result %></p><% } %>
+<a class="btn ghost" href="/torneos">Volver</a></section>
+<%- include('partials/foot') %>

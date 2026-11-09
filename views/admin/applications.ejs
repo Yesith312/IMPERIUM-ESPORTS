@@ -1,0 +1,7 @@
+<%- include('../partials/head', { desc: 'Panel' }) %>
+<%- include('nav', { resources, can }) %>
+<h1>Postulaciones</h1>
+<% if (!list.length) { %><p class="empty">Aún no hay postulaciones.</p><% } else { %>
+<div class="table-wrap"><table><thead><tr><th>Código</th><th>Nickname</th><th>Rol</th><th>País</th><th>Estado</th><th>Fecha</th></tr></thead><tbody>
+<% list.forEach(a => { %><tr><td><a href="/admin/solicitudes/<%= a.id %>"><%= a.code %></a></td><td><%= a.nickname %></td><td><%= a.main_role %></td><td><%= a.country %></td><td><span class="tag"><%= a.status %></span></td><td><%= fmt(a.created_at) %></td></tr><% }) %></tbody></table></div><% } %></div>
+<%- include('../partials/foot') %>
