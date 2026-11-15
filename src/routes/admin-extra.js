@@ -73,7 +73,7 @@ router.post('/admin/solicitudes/:id/invitar', requireAuth('solicitudes'), async 
     return res.redirect('/admin/solicitudes/' + id);
   }
   await query('INSERT INTO tryout_registrations (tryout_id, application_id) VALUES ($1,$2) ON CONFLICT DO NOTHING', [t.rows[0].id, id]);
-  await query("UPDATE applications SET status = 'Invitado a tryout', updated_at = now() WHERE id = $1 AND status IN ('Recibida','En revisión','Preseleccionado')", [id]);
+  await query("UPDATE applications SET status = 'tryout_programado', updated_at = now() WHERE id = $1 AND status IN ('recibida','en_revision','preseleccionado')", [id]);
   await audit(req, `Invitó postulación ${id} al tryout ${t.rows[0].id}`);
   flash(req, 'ok', 'Aspirante invitado al tryout.');
   res.redirect('/admin/solicitudes/' + id);
@@ -114,3 +114,4 @@ router.post('/admin/copia', requireAuth('copia'), async (req, res) => {
 });
 
 module.exports = router;
+    
