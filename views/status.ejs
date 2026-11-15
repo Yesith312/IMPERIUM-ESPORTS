@@ -4,7 +4,7 @@
 <label>Número de solicitud<input name="code" required placeholder="IMP-XXXXXXXX"></label>
 <label>ID de jugador<input name="player_id" required inputmode="numeric"></label><button class="btn">CONSULTAR</button></form>
 <% if (searched && !result) { %><div class="flash error">No encontramos una solicitud con esos datos.</div><% } %>
-<% if (result) { %><div class="card"><h3><%= result.code %></h3><span class="tag"><%= result.status %></span><p class="muted small">Actualizada: <%= fmt(result.updated_at) %></p>
+<% if (result) { %><div class="card"><h3><%= result.code %></h3><span class="tag"><%= statusLabels[result.status] || result.status %></span><p class="muted small">Actualizada: <%= fmt(result.updated_at) %></p>
 <% invites.forEach(i => { %><p><b>Tryout:</b> <%= i.title %> · <%= fmt(i.starts_at) || 'Fecha por confirmar' %> · <%= i.attendance %></p><% }) %></div><% } %>
 </section>
 <%- include('partials/foot') %>
