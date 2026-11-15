@@ -1,3 +1,4 @@
+const { applicationStatusLabels: statusLabels } = require('../application-statuses');
 const crypto = require('crypto');
 const router = require('express').Router();
 const { query } = require('../db');
@@ -59,7 +60,7 @@ router.post('/reclutamiento', formLimiter, async (req, res) => {
 });
 
 router.get('/reclutamiento/estado', (req, res) => {
-  res.render('status', { title: 'Estado de postulación | IMPERIUM ESPORTS', result: null, invites: [], searched: false });
+  res.render('status', { title: 'Estado de postulación | IMPERIUM ESPORTS', result: null, invites: [], searched: false, statusLabels });
 });
 
 router.post('/reclutamiento/estado', formLimiter, async (req, res) => {
@@ -71,7 +72,7 @@ router.post('/reclutamiento/estado', formLimiter, async (req, res) => {
     const i = await query('SELECT t.title, t.starts_at, t.roles, g.attendance FROM tryout_registrations g JOIN tryouts t ON t.id = g.tryout_id WHERE g.application_id = $1 ORDER BY t.starts_at', [r.rows[0].id]);
     invites = i.rows;
   }
-  res.render('status', { title: 'Estado de postulación | IMPERIUM ESPORTS', result: r.rows[0] || null, invites, searched: true });
+  res.render('status', { title: 'Estado de postulación | IMPERIUM ESPORTS', result: r.rows[0] || null, invites, searched: true, statusLabels });
 });
 
 router.get('/tryouts', async (req, res) => {
