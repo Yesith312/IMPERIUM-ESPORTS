@@ -1,24 +1,18 @@
 const crypto = require('crypto');
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const { query } = require('../db');
-const resources = require('../resources');
+const { query } = require('../db');                                     const resources = require('../resources');
 const { loginLimiter, requireAuth, audit, flash, clearSettingsCache, adminRoles } = require('../middleware');
 
-const appStatuses = ['Recibida', 'En revisión', 'Preseleccionado', 'Invitado a tryout', 'En evaluación', 'Aceptado', 'No seleccionado'];
+const { applicationStatuses, applicationStatusValues } = require('../application-statuses');
 const evalKeys = ['mecanicas', 'comunicacion', 'trabajo_equipo', 'rotaciones', 'decisiones', 'conocimiento', 'disciplina', 'potencial'];
 const settingKeys = [['instagram', 'Instagram (URL)'], ['tiktok', 'TikTok (URL)'], ['youtube', 'YouTube (URL)'], ['discord', 'Discord (URL de invitación)'], ['email', 'Correo oficial'], ['ceo', 'CEO y fundador'], ['legal_name', 'Razón social'], ['legal_id', 'NIT'], ['legal_address', 'Domicilio'], ['privacy_email', 'Correo para datos personales'], ['updated', 'Fecha de última actualización legal']];
 const dummyHash = bcrypt.hashSync('no-existe', 10);
 
 const slugify = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) + '-' + crypto.randomBytes(3).toString('hex');
-
-function readValues(res, body) {
-  return res.fields.map(f => {
-    let v = body[f.n];
-    if (f.t === 'checkbox') return !!v;
-    if (v === undefined || String(v).trim() === '') return f.t === 'number' || f.n === 'starts_at' ? null : (f.req ? '' : null);
-    if (f.n === 'starts_at') {
-      const raw = String(v).trim();
+                                                                        function readValues(res, body) {
+  return res.fields.map(f => {                                              let v = body[f.n];
+    if (f.t === 'checkbox') return !!v;                                     if (v === undefined || String(v).trim() === '') return f.t === 'number' || f.n === 'starts_at' ? null : (f.req ? '' : null);                    if (f.n === 'starts_at') {                                                const raw = String(v).trim();
       return /\d:\d\d.*(Z|[+-]\d\d(:?\d\d)?)$/.test(raw) ? raw : raw + ' -05:00';
     }
     return f.t === 'number' ? parseInt(v, 10) || 0 : String(v).trim();
@@ -53,11 +47,11 @@ router.post('/salir', (req, res) => {
 
 router.get('/admin', requireAuth(), async (req, res) => {
   const [apps, msgs, news] = await Promise.all([
-    query("SELECT count(*)::int AS n FROM applications WHERE status = 'Recibida'"),
+    query("SELECT count(*)::int AS n FROM applications WHERE status = 'recibida'"),
     query('SELECT count(*)::int AS n FROM messages WHERE NOT read'),
     query('SELECT count(*)::int AS n FROM news')
   ]);
-  const rights = await query("SELECT count(*)::int AS n FROM data_requests WHERE status = 'Recibida'");
+  const rights = await query("SELECT count(*)::int AS n FROM data_requests WHERE status = 'recibida'");
   res.render('admin/dashboard', { title: 'Panel | IMPERIUM ESPORTS', counts: { apps: apps.rows[0].n, msgs: msgs.rows[0].n, news: news.rows[0].n, rights: rights.rows[0].n } });
 });
 
@@ -73,12 +67,12 @@ router.get('/admin/solicitudes/:id', requireAuth('solicitudes'), async (req, res
     query('SELECT id, title, starts_at FROM tryouts WHERE open ORDER BY starts_at NULLS LAST'),
     query('SELECT t.title, g.attendance FROM tryout_registrations g JOIN tryouts t ON t.id = g.tryout_id WHERE g.application_id = $1', [r.rows[0].id])
   ]);
-  res.render('admin/application', { title: 'Postulación ' + r.rows[0].code, a: r.rows[0], statuses: appStatuses, evalKeys, tryouts: tryouts.rows, regs: regs.rows });
+  res.render('admin/application', { title: 'Postulación ' + r.rows[0].code, a: r.rows[0], statuses: applicationStatuses, evalKeys, tryouts: tryouts.rows, regs: regs.rows });
 });
 
 router.post('/admin/solicitudes/:id', requireAuth('solicitudes'), async (req, res) => {
   const id = parseInt(req.params.id, 10) || 0;
-  const status = appStatuses.includes(req.body.status) ? req.body.status : 'Recibida';
+  const status = applicationStatusValues.includes(req.body.status) ? req.body.status : 'recibida';
   const evaluation = {};
   for (const k of evalKeys) {
     const n = parseInt(req.body['ev_' + k], 10);
