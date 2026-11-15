@@ -1,18 +1,24 @@
 const crypto = require('crypto');
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const { query } = require('../db');                                     const resources = require('../resources');
+const { query } = require('../db');
+const resources = require('../resources');
 const { loginLimiter, requireAuth, audit, flash, clearSettingsCache, adminRoles } = require('../middleware');
 
-const { applicationStatuses, applicationStatusValues } = require('../application-statuses');
+const { applicationStatuses, applicationStatusValues, applicationStatusLabels: statusLabels } = require('../application-statuses');
 const evalKeys = ['mecanicas', 'comunicacion', 'trabajo_equipo', 'rotaciones', 'decisiones', 'conocimiento', 'disciplina', 'potencial'];
 const settingKeys = [['instagram', 'Instagram (URL)'], ['tiktok', 'TikTok (URL)'], ['youtube', 'YouTube (URL)'], ['discord', 'Discord (URL de invitación)'], ['email', 'Correo oficial'], ['ceo', 'CEO y fundador'], ['legal_name', 'Razón social'], ['legal_id', 'NIT'], ['legal_address', 'Domicilio'], ['privacy_email', 'Correo para datos personales'], ['updated', 'Fecha de última actualización legal']];
 const dummyHash = bcrypt.hashSync('no-existe', 10);
 
 const slugify = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) + '-' + crypto.randomBytes(3).toString('hex');
-                                                                        function readValues(res, body) {
-  return res.fields.map(f => {                                              let v = body[f.n];
-    if (f.t === 'checkbox') return !!v;                                     if (v === undefined || String(v).trim() === '') return f.t === 'number' || f.n === 'starts_at' ? null : (f.req ? '' : null);                    if (f.n === 'starts_at') {                                                const raw = String(v).trim();
+
+function readValues(res, body) {
+  return res.fields.map(f => {
+    let v = body[f.n];
+    if (f.t === 'checkbox') return !!v;
+    if (v === undefined || String(v).trim() === '') return f.t === 'number' || f.n === 'starts_at' ? null : (f.req ? '' : null);
+    if (f.n === 'starts_at') {
+      const raw = String(v).trim();
       return /\d:\d\d.*(Z|[+-]\d\d(:?\d\d)?)$/.test(raw) ? raw : raw + ' -05:00';
     }
     return f.t === 'number' ? parseInt(v, 10) || 0 : String(v).trim();
@@ -57,7 +63,7 @@ router.get('/admin', requireAuth(), async (req, res) => {
 
 router.get('/admin/solicitudes', requireAuth('solicitudes'), async (req, res) => {
   const r = await query('SELECT id, code, status, created_at, data->>\'nickname\' AS nickname, data->>\'main_role\' AS main_role, data->>\'country\' AS country FROM applications ORDER BY created_at DESC LIMIT 300');
-  res.render('admin/applications', { title: 'Postulaciones', list: r.rows });
+  res.render('admin/applications', { title: 'Postulaciones', list: r.rows, statusLabels });
 });
 
 router.get('/admin/solicitudes/:id', requireAuth('solicitudes'), async (req, res, next) => {
