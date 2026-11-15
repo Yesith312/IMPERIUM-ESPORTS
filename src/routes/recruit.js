@@ -1,5 +1,4 @@
 const { applicationStatusLabels: statusLabels } = require('../application-statuses');
-const crypto = require('crypto');
 const router = require('express').Router();
 const { query } = require('../db');
 const { formLimiter } = require('../middleware');
@@ -47,8 +46,12 @@ router.post('/reclutamiento', formLimiter, async (req, res) => {
   if (blocked) errors.push(blocked);
   if (errors.length) return res.status(400).render('recruit', { title: 'Reclutamiento oficial | IMPERIUM ESPORTS', roles, devices, form: { ...form, age: b.age }, errors });
 
-  const code = 'IMP-' + crypto.randomBytes(4).toString('hex').toUpperCase();
-  await query('INSERT INTO applications (code, data, player_id, guardian_consent) VALUES ($1,$2,$3,$4)', [code, JSON.stringify(form), form.player_id, minor ? true : false]);
+  const result = await query(
+  'INSERT INTO applications (code, data, player_id, guardian_consent) VALUES ($1,$2,$3,$4) RETURNING code',
+  [null, JSON.stringify(form), form.player_id, minor ? true : false]
+);
+
+const code = result.rows[0].code;
 
   if (process.env.NOTIFY_WEBHOOK_URL) {
     fetch(process.env.NOTIFY_WEBHOOK_URL, {
@@ -81,3 +84,4 @@ router.get('/tryouts', async (req, res) => {
 });
 
 module.exports = router;
+            
