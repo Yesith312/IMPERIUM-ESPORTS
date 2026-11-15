@@ -57,7 +57,7 @@ router.get('/admin', requireAuth(), async (req, res) => {
     query('SELECT count(*)::int AS n FROM messages WHERE NOT read'),
     query('SELECT count(*)::int AS n FROM news')
   ]);
-  const rights = await query("SELECT count(*)::int AS n FROM data_requests WHERE status = 'recibida'");
+  const rights = await query("SELECT count(*)::int AS n FROM data_requests WHERE status = 'Recibida'");
   res.render('admin/dashboard', { title: 'Panel | IMPERIUM ESPORTS', counts: { apps: apps.rows[0].n, msgs: msgs.rows[0].n, news: news.rows[0].n, rights: rights.rows[0].n } });
 });
 
@@ -181,3 +181,4 @@ router.post('/admin/r/:res/:id/eliminar', async (req, res, next) => {
 });
 
 module.exports = router;
+    
