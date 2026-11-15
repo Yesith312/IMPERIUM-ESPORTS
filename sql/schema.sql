@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS applications (
   code TEXT UNIQUE NOT NULL,
   data JSONB NOT NULL,
   player_id TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'Recibida',
+  status TEXT NOT NULL DEFAULT 'recibida',
   notes TEXT,
   evaluation JSONB,
   guardian_consent BOOLEAN NOT NULL DEFAULT false,
@@ -200,3 +200,4 @@ CREATE TABLE IF NOT EXISTS data_requests (
   answer TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+  
