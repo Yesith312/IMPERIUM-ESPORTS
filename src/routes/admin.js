@@ -79,12 +79,56 @@ router.get('/admin/solicitudes/:id', requireAuth('solicitudes'), async (req, res
 router.post('/admin/solicitudes/:id', requireAuth('solicitudes'), async (req, res) => {
   const id = parseInt(req.params.id, 10) || 0;
   const status = applicationStatusValues.includes(req.body.status) ? req.body.status : 'recibida';
+
   const evaluation = {};
   for (const k of evalKeys) {
     const n = parseInt(req.body['ev_' + k], 10);
     evaluation[k] = n >= 1 && n <= 10 ? n : null;
   }
-  await query('UPDATE applications SET status = $1, notes = $2, evaluation = $3, updated_at = now() WHERE id = $4', [status, String(req.body.notes || '').slice(0, 4000), JSON.stringify(evaluation), id]);
+
+  const finalDecision = ['seleccionado', 'no_seleccionado'].includes(status);
+
+  if (finalDecision) {
+    const apiUrl = process.env.IMPERIUM_BOT_API_URL;
+    const apiSecret = process.env.IMPERIUM_BOT_API_SECRET;
+
+    if (!apiUrl || !apiSecret) {
+      flash(req, 'error', 'La conexión con el bot no está configurada.');
+      return res.redirect('/admin/solicitudes/' + id);
+    }
+
+    try {
+      const botResponse = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiSecret
+        },
+        body: JSON.stringify({ id, status }),
+        signal: AbortSignal.timeout(15000)
+      });
+
+      let botResult = null;
+      try {
+        botResult = await botResponse.json();
+      } catch (_) {}
+
+      if (!botResponse.ok || !botResult || botResult.ok !== true) {
+        flash(req, 'error', 'El bot no pudo procesar la decisión. No se guardaron los cambios.');
+        return res.redirect('/admin/solicitudes/' + id);
+      }
+    } catch (error) {
+      console.error('Error conectando con la API privada del bot:', error.message);
+      flash(req, 'error', 'No fue posible conectar con el bot. Inténtalo nuevamente.');
+      return res.redirect('/admin/solicitudes/' + id);
+    }
+  }
+
+  await query(
+    'UPDATE applications SET status = $1, notes = $2, evaluation = $3, updated_at = now() WHERE id = $4',
+    [status, String(req.body.notes || '').slice(0, 4000), JSON.stringify(evaluation), id]
+  );
+
   await audit(req, `Actualizó postulación ${id} a ${status}`);
   flash(req, 'ok', 'Postulación actualizada.');
   res.redirect('/admin/solicitudes/' + id);
@@ -181,4 +225,4 @@ router.post('/admin/r/:res/:id/eliminar', async (req, res, next) => {
 });
 
 module.exports = router;
-    
+  
