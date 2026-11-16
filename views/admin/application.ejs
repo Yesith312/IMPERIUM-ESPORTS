@@ -2,7 +2,67 @@
 <%- include('nav') %>
 <h1>Postulación <%= a.code %></h1>
 <div class="table-wrap"><table><tbody>
-<% Object.entries(a.data).forEach(([k, v]) => { %><tr><th><%= k %></th><td style="white-space:pre-line"><%= v !== null && typeof v === 'object' ? JSON.stringify(v, null, 2) : v %></td></tr><% }) %>
+<%
+function formatApplicationValue(key, value) {
+  if (value === null || value === undefined || value === '') return '—';
+
+  if (key === '_discord' && typeof value === 'object') {
+    const username = value.username || value.globalName || value.tag;
+    const id = value.user_id || value.discord_id || value.id;
+    return [username ? '@' + username : '', id ? 'ID: ' + id : '']
+      .filter(Boolean).join(' · ') || 'Sin información de Discord';
+  }
+
+  if (key === '_historial' && Array.isArray(value)) {
+    if (!value.length) return 'Sin movimientos';
+    return value.map(item => {
+      const fecha = item.fecha && !isNaN(Date.parse(item.fecha))
+        ? new Date(item.fecha).toLocaleString('es-CO', { timeZone: 'America/Bogota' })
+        : 'Fecha no disponible';
+      const estado = String(item.estado || 'Sin estado').replace(/_/g, ' ');
+      return `${fecha} — ${estado} · Usuario: ${item.por || 'No identificado'}`;
+    }).join('\\n');
+  }
+
+  if (key === 'discord' && typeof value === 'string') {
+    return value.startsWith('@') ? value : '@' + value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(item => {
+      if (item && typeof item === 'object') {
+        return Object.entries(item)
+          .map(([k, v]) => `${k}: ${formatApplicationValue(k, v)}`)
+          .join(' · ');
+      }
+      return String(item);
+    }).join('\\n');
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value)
+      .map(([k, v]) => `${k}: ${formatApplicationValue(k, v)}`)
+      .join('\\n');
+  }
+
+  return String(value);
+}
+
+function applicationLabel(key) {
+  return ({
+    _discord: 'Discord (datos de cuenta)',
+    _historial: 'Historial de estados',
+    _form: 'Formulario',
+    discord: 'Usuario de Discord'
+  })[key] || key.replace(/_/g, ' ');
+}
+%>
+<% Object.entries(a.data || {}).forEach(([k, v]) => { %>
+<tr>
+  <th><%= applicationLabel(k) %></th>
+  <td style="white-space:pre-line"><%= formatApplicationValue(k, v) %></td>
+</tr>
+<% }) %>
 <tr><th>Autorización representante</th><td><%= a.guardian_consent ? 'Sí' : 'No aplica' %></td></tr></tbody></table></div>
 <h2>Gestión y evaluación privada</h2>
 <form method="post" class="form" action="/admin/solicitudes/<%= a.id %>"><input type="hidden" name="_csrf" value="<%= csrf %>">
